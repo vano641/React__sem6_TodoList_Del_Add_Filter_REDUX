@@ -4,6 +4,8 @@ import {toggleTodo} from "../actions/todoActions";
 import {FilterContext} from "../contexts/FilterContext";
 import withFilter from "../hoc/withFilter";
 
+import { delTodo } from "../actions/todoActions";
+
 const TodoList = () => {
     //получаем список задач из Redux хранилища
     const todos = useSelector(state => state.todos);
@@ -18,17 +20,35 @@ const TodoList = () => {
         dispatch(toggleTodo(id));
     };
 
+    const deleteTodo = (id) => {
+        dispatch(delTodo(id));
+    }
+
     return (
         <ul>
             {filteredTodos.map(todo => (
-                <li
-                    key={todo.id}
-                    onClick={() => handleToggleTodo(todo.id)}
-                    style={{textDecoration: todo.completed ? 'line-through' : 'none'}}
-                >
-                    {todo.text}
+                <>
+                    <li
+                        key={todo.id}
+                        style={{textDecoration: todo.completed ? 'line-through' : 'none'}}
+                    >
+                        <>
+                            {todo.text}
 
-                </li>
+                            <button  onClick={() => handleToggleTodo(todo.id)}>
+                                Done
+                            </button>
+
+                            <button 
+                                onClick={() => deleteTodo(todo.id)}
+                            >
+                                Delete
+                            </button>
+                            
+                        </>
+                    </li>
+                    
+                </>
             ))}
         </ul>
     )
